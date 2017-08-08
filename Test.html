@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style type="text/css" rel="stylesheet">
+        body{
+            margin: 100px;
+        }
+        *{
+            padding: 0px;
+            margin: 0px;
+        }
+        #flash {
+            width: 600px;
+            height: 300px;
+            margin: 100px;
+            position: relative;
+        }
+        ul,
+        ol {
+            list-style: none;
+        }
+
+        nav a{
+            position: absolute;
+            top: 100px;
+            z-index: 999;
+            font-size: 36px;
+            width: 40px;
+            height: 60px;
+            line-height: 60px;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        nav a:hover{
+            background: #333;
+            color:white;
+        }
+
+        nav a:nth-of-type(1){
+            left:0px;
+        }
+        nav a:nth-of-type(2){
+            right:0px;
+        }
+        ul li{
+            width: 600px;
+            height: 300px;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            transition: 0.5s;
+            opacity: 0;
+
+        }
+        ul li:nth-of-type(1){
+            background-color: red;
+        }
+        ul li:nth-of-type(2){
+            background-color: #66e100;
+        }
+        ul li:nth-of-type(3){
+            background-color: #009aff;
+        }
+        ol{
+            position: absolute;
+            bottom: 50px;
+            right: 50px;
+            z-index: 50;
+        }
+        ol li {
+            float: left;
+            width: 12px;
+            height: 12px;
+            border: 2px solid #00d7ff;
+            background: #ccc;
+            border-radius: 50%;
+            margin: 0px 5px;
+        }
+
+
+        ul .showIt{
+            z-index: 1;
+            opacity: 1;
+        }
+        ol .showOL{
+            background-color: white;
+            border-color: lightcyan;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="flash">
+        <ul>
+            <li>A</li>
+            <li>B</li>
+            <li>C</li>
+        </ul>
+        <ol>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ol>
+        <nav>
+            <a href="#">&lt;</a>
+            <a href="#">&gt;</a>
+        </nav>
+    </div>
+    <script type="text/javascript">
+        var arrs=document.querySelectorAll("nav a");
+        var list=document.querySelectorAll("ul li");
+        var listOL=document.querySelectorAll("ol li");
+        var flash=document.querySelector("#flash");
+        var i= 0,timer;
+
+        //初始化
+        list[i].className="showIt";
+        listOL[i].className="showOL";
+        console.log(i);
+
+        //左右键
+        arrs[0].onclick=function(){
+            i--;
+            console.log(i);
+            if(i==-1){
+                i=2;
+            }
+            init(list);init(listOL);
+            list[i].className="showIt";
+            listOL[i].className="showOL";
+        }
+
+        arrs[1].onclick=function(){
+
+            i++;
+            console.log(i);
+            if(i==3){
+                i=0;
+            }
+            init(list);init(listOL);
+            list[i].className="showIt";
+            listOL[i].className="showOL";
+        }
+
+
+
+        //初始化函数
+        function init(list){
+            for(var j=0;j<list.length;j++){
+                list[j].className="";
+            }
+        }
+        //小圆点
+        (function(){
+            for(var k=0;k<listOL.length;k++){
+                listOL[k].index=k;
+                listOL[k].onclick=circle;
+
+                function circle(){
+                    init(list);init(listOL);
+                    i=this.index;
+                    list[this.index].className="showIt";
+                    listOL[this.index].className="showOL";
+                }
+            }
+        }())
+
+        //自动播放功能
+
+        function auto(){
+            i++;
+            if(i==3) {
+                i = 0;
+            }
+            init(list);init(listOL);
+
+            list[i].className="showIt";
+            listOL[i].className="showOL";
+        }
+        timer=setInterval(auto,2000);
+        flash.onmouseover=function(){
+            clearInterval(timer);
+        }
+        flash.onmouseout=function(){
+            timer=setInterval(auto,2000);
+        }
+    </script>
+</body>
+</html>
